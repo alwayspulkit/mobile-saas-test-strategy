@@ -1,0 +1,10 @@
+appId: com.example.eventflow
+---
+- launchApp
+- assertVisible: ".*Home|Discover.*"
+- tapOn:
+    id: "tab-search"
+- assertVisible: ".*Search|Find.*"
+- tapOn:
+    id: "tab-profile"
+- assertVisible: ".*Profile|Account.*"

@@ -10,16 +10,20 @@
     "test:api": "jest --testPathPattern=tests/api",
     "test:rls": "jest --testPathPattern=tests/rls-security",
     "test:smoke": "jest --testPathPattern=tests/smoke",
-    "test:e2e:web": "playwright test tests/e2e-web",
+    "test:e2e:web": "playwright test --config=tests/e2e-web/playwright.config.ts",
     "test:all": "jest",
     "anonymization:check": "bash tools/anonymization-check.sh"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.48.0",
+    "@supabase/supabase-js": "^2.105.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.0",
+    "dotenv": "^16.6.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
 }
