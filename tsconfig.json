@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@fixtures/*": ["fixtures/*"],
+      "@tools/*": ["tools/*"]
+    }
+  },
+  "include": ["tests/**/*", "tools/**/*", "fixtures/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

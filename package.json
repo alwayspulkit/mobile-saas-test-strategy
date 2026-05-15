@@ -1,0 +1,25 @@
+{
+  "name": "mobile-saas-test-strategy",
+  "version": "0.1.0",
+  "description": "Production-grade QE strategy for a cross-platform mobile SaaS — anonymized.",
+  "private": true,
+  "scripts": {
+    "test:unit": "jest --testPathPattern=tests/unit",
+    "test:component": "jest --testPathPattern=tests/component",
+    "test:integration": "jest --testPathPattern=tests/integration",
+    "test:api": "jest --testPathPattern=tests/api",
+    "test:rls": "jest --testPathPattern=tests/rls-security",
+    "test:smoke": "jest --testPathPattern=tests/smoke",
+    "test:e2e:web": "playwright test tests/e2e-web",
+    "test:all": "jest",
+    "anonymization:check": "bash tools/anonymization-check.sh"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.0",
+    "typescript": "^5.4.5"
+  }
+}
