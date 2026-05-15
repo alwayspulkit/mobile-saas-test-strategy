@@ -1,0 +1,18 @@
+appId: com.example.eventflow
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Welcome to"
+- tapOn: "Skip"
+- assertVisible: "Sign Up Free"
+- tapOn: "Sign in to existing account"
+- assertVisible: "Email"
+- inputText:
+    id: "email-input"
+    text: "${EVENTFLOW_TEST_EMAIL}"
+- tapOn: "Password"
+- inputText:
+    id: "password-input"
+    text: "${EVENTFLOW_TEST_PASSWORD}"
+- tapOn: "Sign In"
+- assertVisible: ".*radar|Discover|Events.*"

@@ -2,24 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, plan-b-test-layers]
   pull_request:
     branches: [main]
 
-# Jobs are added incrementally as test layers are implemented in Plan B.
-# Each layer gets its own job in this file.
-
 jobs:
-  # ── Plan B will populate these ────────────────────────────────────────────
-  # unit-tests:
-  # component-tests:
-  # integration-tests:
-  # api-tests:
-  # rls-security-tests:
-  # e2e-mobile:
-  # e2e-web:
-  # smoke:
-
   setup:
     runs-on: ubuntu-latest
     steps:
@@ -31,3 +18,92 @@ jobs:
       - run: npm ci
       - name: Type check
         run: npx tsc --noEmit
+      - name: Anonymization check
+        run: bash tools/anonymization-check.sh
+
+  unit:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:unit -- --ci
+
+  component:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:component -- --ci
+
+  smoke:
+    needs: [unit, component]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:smoke -- --ci
+
+  # Supabase-dependent layers — run only when secrets are configured
+  integration:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: ${{ vars.SUPABASE_CONFIGURED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:integration -- --ci
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+  rls-security:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: ${{ vars.SUPABASE_CONFIGURED == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:rls -- --ci
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+  e2e-web:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: ${{ vars.EVENTFLOW_WEB_URL != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e:web
+        env:
+          EVENTFLOW_WEB_URL: ${{ vars.EVENTFLOW_WEB_URL }}

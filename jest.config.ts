@@ -1,4 +1,7 @@
 import type { Config } from 'jest';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const config: Config = {
   preset: 'ts-jest',
@@ -11,6 +14,7 @@ const config: Config = {
   },
   collectCoverageFrom: ['tests/**/*.ts'],
   reporters: ['default'],
+  testTimeout: 30000,
 };
 
 export default config;
