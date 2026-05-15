@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Jobs are added incrementally as test layers are implemented in Plan B.
+# Each layer gets its own job in this file.
+
+jobs:
+  # ── Plan B will populate these ────────────────────────────────────────────
+  # unit-tests:
+  # component-tests:
+  # integration-tests:
+  # api-tests:
+  # rls-security-tests:
+  # e2e-mobile:
+  # e2e-web:
+  # smoke:
+
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - name: Type check
+        run: npx tsc --noEmit
