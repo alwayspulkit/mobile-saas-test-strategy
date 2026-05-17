@@ -72,6 +72,14 @@ npm run anonymization:check
 | 5 | Chaos/offline · analytics contract · STRATEGY.md §12 (org scaling) |
 | 6 | `rls-coverage` CLI published to npm · final strategy pass · profile update |
 
+
+## Quality Dashboard 
+
+<img width="964" height="734" alt="Screenshot 2026-05-17 at 14 43 14" src="https://github.com/user-attachments/assets/1407d737-f8a1-44ac-986e-b259ae9a6917" />
+
+<img width="948" height="709" alt="Screenshot 2026-05-17 at 14 43 25" src="https://github.com/user-attachments/assets/b14484cb-4212-4ea0-8968-5845d468d34b" />
+
+
 ---
 
 ## About
